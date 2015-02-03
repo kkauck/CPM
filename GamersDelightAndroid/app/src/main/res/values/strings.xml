@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GamersDelight</string>
+    <string name="action_settings">Settings</string>
+    <string name="userhint">Please Enter Username Here</string>
+    <string name="passwordhint">Please Enter Password Here</string>
+    <string name="login">LOGIN</string>
+    <string name="create">CREATE ACCOUNT</string>
+    <string name="createUsername">Please Enter Username Here</string>
+    <string name="createPassword">Please Enter Password Here</string>
+    <string name="createAccount">Create Account</string>
+
+</resources>
