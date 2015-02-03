@@ -6,7 +6,7 @@ package com.example.kylek.gamersdelight.Helpers;
 public class GameHelper {
 
     private String mGameName;
-    private int mGamePrice;
+    private double mGamePrice;
 
     public GameHelper(){
 
@@ -15,7 +15,7 @@ public class GameHelper {
 
     }
 
-    public GameHelper (String _name, int _price){
+    public GameHelper (String _name, double _price){
 
         mGameName = _name;
         mGamePrice = _price;
@@ -28,7 +28,7 @@ public class GameHelper {
 
     }
 
-    public int getPrice(){
+    public double getPrice(){
 
         return mGamePrice;
 

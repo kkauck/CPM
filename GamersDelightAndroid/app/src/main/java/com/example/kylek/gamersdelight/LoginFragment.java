@@ -46,6 +46,15 @@ public class LoginFragment extends Fragment {
 
         Parse.initialize(getActivity(), "nIUQZ0RdsWtOjHfl1fVSZ2sUpz6s3kqJRQdyTlwW", "buz2Dn0Mv74kEiW4klIExjoqcXokTznG40UIMqBj");
 
+        ParseUser current = ParseUser.getCurrentUser();
+        if (current != null){
+
+            Intent intent = new Intent(getActivity(), GameActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+
+        }
+
         mLogin = (Button) view.findViewById(R.id.loginButton);
         mLogin.setOnClickListener(new View.OnClickListener() {
 

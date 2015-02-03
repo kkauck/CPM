@@ -10,5 +10,8 @@
     <string name="createUsername">Please Enter Username Here</string>
     <string name="createPassword">Please Enter Password Here</string>
     <string name="createAccount">Create Account</string>
+    <string name="createGameHint">Please Enter Game Name Here</string>
+    <string name="createPriceHint">Please Enter Game Price Here</string>
+    <string name="createGameButton">Add Game</string>
 
 </resources>
