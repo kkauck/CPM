@@ -7,18 +7,21 @@ public class GameHelper {
 
     private String mGameName;
     private double mGamePrice;
+    private String mGameID;
 
     public GameHelper(){
 
         mGameName = "";
         mGamePrice = 0;
+        mGameID = "";
 
     }
 
-    public GameHelper (String _name, double _price){
+    public GameHelper (String _name, double _price, String _id){
 
         mGameName = _name;
         mGamePrice = _price;
+        mGameID = _id;
 
     }
 
@@ -31,6 +34,12 @@ public class GameHelper {
     public double getPrice(){
 
         return mGamePrice;
+
+    }
+
+    public String getID(){
+
+        return mGameID;
 
     }
 
