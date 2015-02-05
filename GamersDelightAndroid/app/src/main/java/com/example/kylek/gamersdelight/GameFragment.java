@@ -47,66 +47,6 @@ public class GameFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
-        final View view = getView();
-        assert view != null;
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        mGameDetails.clear();
-
-        mGameList = (ListView) view.findViewById(R.id.gameList);
-
-        final ParseQuery<ParseObject> games = ParseQuery.getQuery("Game");
-        games.whereEqualTo("user", currentUser);
-        games.findInBackground(new FindCallback<ParseObject>() {
-
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-
-                if (e == null){
-
-                    for (int i = 0; i < parseObjects.size(); i++){
-
-                        String name = parseObjects.get(i).getString("title");
-                        Double price = parseObjects.get(i).getDouble("price");
-                        String id = parseObjects.get(i).getObjectId();
-
-                        mGameDetails.add(new GameHelper(name, price, id));
-
-                    }
-
-                } else {
-
-                    Toast.makeText(getActivity(), "Sorry There Were No Games To Display", Toast.LENGTH_LONG).show();
-
-                }
-
-                mGameList.setAdapter(new GameAdapter(getActivity(), mGameDetails));
-
-            }
-
-        });
-
-        mGameList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (mAction != null){
-
-                    return false;
-
-                }
-
-                mPosition = position;
-                mAction = getActivity().startActionMode(actionCallback);
-
-                return true;
-
-            }
-
-        });
-
     }
 
     private ActionMode.Callback actionCallback = new ActionMode.Callback(){
@@ -155,6 +95,74 @@ public class GameFragment extends Fragment {
 
     };
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        final View view = getView();
+        assert view != null;
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        mGameDetails.clear();
+
+        mGameList = (ListView) view.findViewById(R.id.gameList);
+
+        final ParseQuery<ParseObject> games = ParseQuery.getQuery("Game");
+        games.whereEqualTo("user", currentUser);
+        games.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+
+                if (e == null){
+
+                    for (int i = 0; i < parseObjects.size(); i++){
+
+                        String name = parseObjects.get(i).getString("title");
+                        Double price = parseObjects.get(i).getDouble("price");
+                        String id = parseObjects.get(i).getObjectId();
+
+                        mGameDetails.add(new GameHelper(name, price, id));
+
+                    }
+
+                } else {
+
+                    Toast.makeText(getActivity(), "Sorry There Were No Games To Display", Toast.LENGTH_LONG).show();
+
+                }
+
+                mGameList.setAdapter(null);
+                mGameList.setAdapter(new GameAdapter(getActivity(), mGameDetails));
+
+            }
+
+        });
+
+        mGameList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (mAction != null){
+
+                    return false;
+
+                }
+
+                mPosition = position;
+                mAction = getActivity().startActionMode(actionCallback);
+
+                return true;
+
+            }
+
+        });
+
+    }
+
     private void deleteThisGame() {
 
         mHelper = mGameDetails.get(mPosition);
@@ -173,6 +181,7 @@ public class GameFragment extends Fragment {
 
                         ParseObject current = parseObjects.get(i);
                         current.deleteInBackground();
+                        updateList();
 
                     }
 
@@ -181,8 +190,6 @@ public class GameFragment extends Fragment {
             }
 
         });
-
-        updateList();
 
     }
 

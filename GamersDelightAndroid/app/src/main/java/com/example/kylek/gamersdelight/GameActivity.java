@@ -49,6 +49,10 @@ public class GameActivity extends ActionBarActivity{
 
             ParseUser.logOut();
 
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+
             Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_LONG).show();
 
         }
