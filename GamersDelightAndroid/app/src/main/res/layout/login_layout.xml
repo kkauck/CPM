@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#7887AB">
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,7 +18,9 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="15dp"
-            android:hint="@string/userhint" />
+            android:hint="@string/userhint"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
         <EditText
             android:layout_width="match_parent"
@@ -28,7 +31,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginRight="15dp"
             android:hint="@string/passwordhint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
         <Button
             android:layout_width="fill_parent"
@@ -39,7 +44,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginRight="15dp"
             android:textSize="20sp"
-            android:background="#ff7817ff"
+            android:background="#162955"
             android:textColor="@android:color/white" />
 
         <Button
@@ -50,7 +55,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="15dp"
-            android:background="#ff7817ff"
+            android:background="#162955"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>

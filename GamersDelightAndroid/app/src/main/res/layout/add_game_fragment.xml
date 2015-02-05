@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#7887AB">
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,14 +15,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/createGameName"
             android:layout_margin="15dp"
-            android:hint="@string/createGameHint" />
+            android:hint="@string/createGameHint"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/createGamePrice"
             android:layout_margin="15dp"
-            android:hint="@string/createPriceHint" />
+            android:hint="@string/createPriceHint"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
         <Button
             android:layout_width="match_parent"
@@ -29,7 +34,7 @@
             android:text="@string/createGameButton"
             android:id="@+id/createGameButton"
             android:layout_margin="15dp"
-            android:background="#ff7817ff"
+            android:background="#162955"
             android:textSize="20sp"
             android:textColor="@android:color/white" />
     </LinearLayout>
