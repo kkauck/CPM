@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface MainDisplay : UIViewController
+@interface MainDisplay : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+    
+    NSMutableArray *gameData;
+    PFUser *current;
+    IBOutlet UITableView *gameTable;
+    
+}
 
 - (IBAction)logout:(id)sender;
 
