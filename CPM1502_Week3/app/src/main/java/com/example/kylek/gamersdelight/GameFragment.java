@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,8 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameFragment extends Fragment {
 
@@ -40,6 +43,7 @@ public class GameFragment extends Fragment {
     private ListView mGameList;
     private ActionMode mAction;
     private int mPosition = -1;
+    private final Handler updateHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,6 +133,8 @@ public class GameFragment extends Fragment {
         if (networkCheck()){
 
             ParseUser currentUser = ParseUser.getCurrentUser();
+
+            configurePolling();
 
             mGameDetails.clear();
 
@@ -301,6 +307,36 @@ public class GameFragment extends Fragment {
             }
 
         });
+
+    }
+
+    //This will be called anytime the activity is resumed, and will start checking the parse server for updates.
+    //When first called it will check in 10 seconds, and after that it will be checked every 30 seconds after that.
+    private void configurePolling(){
+
+        Timer checkTimer = new Timer();
+
+        TimerTask getUpdates = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                updateHandler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        updateList();
+
+                    }
+
+                });
+
+            }
+
+        };
+
+        checkTimer.schedule(getUpdates, 10000, 30000);
 
     }
 
