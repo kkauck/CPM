@@ -12,7 +12,6 @@ public class AddGameActivity extends Activity {
     public static final String GAME_NAME = "GAME_NAME";
     public static final String GAME_ID = "GAME_ID";
     public static final String GAME_PRICE = "GAME_PRICE";
-    //private double defaultVal = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

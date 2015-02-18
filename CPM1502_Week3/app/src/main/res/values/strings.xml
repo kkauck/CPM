@@ -13,6 +13,9 @@
     <string name="createGameHint">Please Enter Game Name Here</string>
     <string name="createPriceHint">Please Enter Game Price Here</string>
     <string name="createGameButton">Add Game</string>
+
+    <string name="noNetwork">No Network Connection</string>
+    <string name="noNetMessage">You are currently not connected to a network, please try again when you are connected</string>
     
     <color name="red">#AA0114</color>
 

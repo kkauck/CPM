@@ -3,8 +3,13 @@
 
 package com.example.kylek.gamersdelight;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -47,6 +52,23 @@ public class GameFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+
+    }
+
+    protected boolean networkCheck(){
+
+        ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo information =  manager.getActiveNetworkInfo();
+
+        if (information != null && information.isConnectedOrConnecting()){
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
 
     }
 
@@ -104,83 +126,111 @@ public class GameFragment extends Fragment {
         final View view = getView();
         assert view != null;
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (networkCheck()){
 
-        mGameDetails.clear();
+            ParseUser currentUser = ParseUser.getCurrentUser();
 
-        mGameList = (ListView) view.findViewById(R.id.gameList);
+            mGameDetails.clear();
 
-        final ParseQuery<ParseObject> games = ParseQuery.getQuery("Game");
-        games.whereEqualTo("user", currentUser);
-        games.findInBackground(new FindCallback<ParseObject>() {
+            mGameList = (ListView) view.findViewById(R.id.gameList);
 
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
+            final ParseQuery<ParseObject> games = ParseQuery.getQuery("Game");
+            games.whereEqualTo("user", currentUser);
+            games.findInBackground(new FindCallback<ParseObject>() {
 
-                if (e == null){
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
 
-                    for (int i = 0; i < parseObjects.size(); i++){
+                    if (e == null){
 
-                        String name = parseObjects.get(i).getString("title");
-                        Double price = parseObjects.get(i).getDouble("price");
-                        String id = parseObjects.get(i).getObjectId();
+                        for (int i = 0; i < parseObjects.size(); i++){
 
-                        mGameDetails.add(new GameHelper(name, price, id));
+                            String name = parseObjects.get(i).getString("title");
+                            Double price = parseObjects.get(i).getDouble("price");
+                            String id = parseObjects.get(i).getObjectId();
+
+                            mGameDetails.add(new GameHelper(name, price, id));
+
+                        }
+
+                    } else {
+
+                        Toast.makeText(getActivity(), "Sorry There Were No Games To Display", Toast.LENGTH_LONG).show();
 
                     }
 
-                } else {
-
-                    Toast.makeText(getActivity(), "Sorry There Were No Games To Display", Toast.LENGTH_LONG).show();
-
-                }
-
-                mGameList.setAdapter(null);
-                mGameList.setAdapter(new GameAdapter(getActivity(), mGameDetails));
-
-            }
-
-        });
-
-        mGameList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (mAction != null){
-
-                    return false;
+                    mGameList.setAdapter(null);
+                    mGameList.setAdapter(new GameAdapter(getActivity(), mGameDetails));
 
                 }
 
-                mPosition = position;
-                mAction = getActivity().startActionMode(actionCallback);
+            });
 
-                return true;
+            mGameList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-            }
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        });
+                    if (mAction != null){
 
-        mGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        return false;
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    }
 
-                Intent updateView = new Intent(getActivity(), AddGameActivity.class);
+                    mPosition = position;
+                    mAction = getActivity().startActionMode(actionCallback);
 
-                mHelper = mGameDetails.get(position);
+                    return true;
 
-                updateView.putExtra(AddGameActivity.GAME_NAME, mHelper.getName());
-                updateView.putExtra(AddGameActivity.GAME_ID, mHelper.getID());
-                //updateView.putExtra(AddGameActivity.GAME_PRICE, mHelper.getPrice());
-                updateView.putExtra(AddGameActivity.GAME_PRICE, mHelper.getPrice());
+                }
 
-                startActivity(updateView);
+            });
 
-            }
+            mGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        });
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    Intent updateView = new Intent(getActivity(), AddGameActivity.class);
+
+                    mHelper = mGameDetails.get(position);
+
+                    updateView.putExtra(AddGameActivity.GAME_NAME, mHelper.getName());
+                    updateView.putExtra(AddGameActivity.GAME_ID, mHelper.getID());
+                    updateView.putExtra(AddGameActivity.GAME_PRICE, mHelper.getPrice());
+
+                    startActivity(updateView);
+
+                }
+
+            });
+
+
+        } else {
+
+            final Intent home = new Intent(getActivity(), LoginActivity.class);
+
+            //Will create a new Alert that is displayed to the user when they are not connected to any network
+            AlertDialog.Builder newAlert = new AlertDialog.Builder(getActivity());
+            newAlert.setTitle(R.string.noNetwork);
+            newAlert.setMessage(R.string.noNetMessage);
+            newAlert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.cancel();
+                    ParseUser.logOut();
+                    startActivity(home);
+                    getActivity().finish();
+
+                }
+            });
+
+            AlertDialog noNetAlert = newAlert.create();
+            noNetAlert.show();
+
+        }
 
     }
 
