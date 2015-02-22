@@ -1,0 +1,25 @@
+//
+//  MainDisplay.h
+//  CPM1502_Week2
+//
+//  Created by Kyle K on 02/09/2015.
+//  Copyright (c) 2015 Kyle Kauck. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+
+@interface MainDisplay : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+    
+    NSMutableArray *gameData;
+    PFUser *current;
+    IBOutlet UITableView *gameTable;
+    IBOutlet UIButton *addGame;
+    
+}
+
+- (IBAction)logout:(id)sender;
+- (BOOL)connectionCheck;
+
+@end

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F47B26AB-BDD6-4F14-A3BE-EFB131164B05</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CPM1502_Week2</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>818A5BC3DBC4EFA7D76D4FDC4685438FE06821FD</key>
+		<string>https://github.com/g78624/CPM.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CPM1502_Week4/CPM1502_Week2.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>818A5BC3DBC4EFA7D76D4FDC4685438FE06821FD</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/g78624/CPM.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>818A5BC3DBC4EFA7D76D4FDC4685438FE06821FD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>818A5BC3DBC4EFA7D76D4FDC4685438FE06821FD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CPM</string>
+		</dict>
+	</array>
+</dict>
+</plist>
