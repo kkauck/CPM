@@ -8,6 +8,7 @@
 
 #import "MainDisplay.h"
 #import "Reachability.h"
+#import "AddGame.h"
 
 @implementation MainDisplay
 
@@ -157,6 +158,46 @@
     [currentGame deleteInBackground];
     
     [self updateGameData];
+    
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([segue.identifier isEqualToString:@"updateGame"]){
+        
+        AddGame *updateGame = segue.destinationViewController;
+        
+        if (updateGame != nil){
+            
+            UITableViewCell *cell = (UITableViewCell *)sender;
+            NSIndexPath *indexPath = [gameTable indexPathForCell:cell];
+            
+            PFObject *currentGame = [gameData objectAtIndex:indexPath.row];
+            updateGame.updateTitle = [currentGame objectForKey:@"title"];
+            updateGame.updateID = currentGame.objectId;
+            
+            NSNumber *price = [currentGame objectForKey:@"price"];
+            updateGame.updatePrice = [NSString stringWithFormat:@"%.2f", price.doubleValue];
+            
+        }
+        
+    } else if ([segue.identifier isEqualToString:@"addGame"]){
+        
+        AddGame *createGame = segue.destinationViewController;
+        
+        if (createGame != nil){
+            
+            createGame.updateID = @"";
+            createGame.updatePrice = @"";
+            createGame.updateTitle = @"";
+            
+        }
+        
+    }
+    
+}
+
+- (IBAction)exitView:(UIStoryboardSegue *)closeView{
     
 }
 

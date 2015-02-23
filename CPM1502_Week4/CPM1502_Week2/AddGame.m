@@ -11,6 +11,8 @@
 
 @implementation AddGame
 
+@synthesize updateID,updatePrice,updateTitle, addGame;
+
 - (void) viewDidLoad{
     
     [super viewDidLoad];
@@ -28,6 +30,18 @@
     } else {
         
         [self connectionInvalid];
+        
+    }
+    
+    if ([updateID isEqualToString:@""]){
+        
+        [addGame setTitle:@"Add Game" forState:UIControlStateNormal];
+        
+    } else {
+        
+        [addGame setTitle:@"Update Game" forState:UIControlStateNormal];
+        enteredName.text = updateTitle;
+        enteredPrice.text = updatePrice;
         
     }
     
@@ -49,42 +63,118 @@
 
 - (IBAction)addGame:(id)sender{
     
-    NSNumberFormatter *formater = [[NSNumberFormatter alloc] init];
-    [formater setNumberStyle:NSNumberFormatterDecimalStyle];
+    if ([updateID isEqualToString:@""]){
     
-    gameName = enteredName.text;
-    gamePrice = [formater numberFromString:enteredPrice.text];
+        NSNumberFormatter *formater = [[NSNumberFormatter alloc] init];
+        [formater setNumberStyle:NSNumberFormatterDecimalStyle];
         
-    [PFACL setDefaultACL:[PFACL ACL] withAccessForCurrentUser:YES];
+        gameName = enteredName.text;
+        gamePrice = [formater numberFromString:enteredPrice.text];
         
-    PFObject *gameData = [PFObject objectWithClassName:@"Game"];
-    gameData[@"user"] = current;
-    gameData[@"title"] = gameName;
-    gameData[@"price"] = gamePrice;
-        
-    [gameData saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if(!gamePrice && [gameName isEqualToString:@""]){
             
-        if (succeeded){
+            [self invalidData];
+            
+        } else if (!gamePrice) {
+            
+            [self invalidPrice];
+            
+        } else  if ([gameName isEqualToString:@""]){
+            
+            [self invalidTitle];
+            
+        } else {
+            
+            [PFACL setDefaultACL:[PFACL ACL] withAccessForCurrentUser:YES];
+            
+            PFObject *gameData = [PFObject objectWithClassName:@"Game"];
+            gameData[@"user"] = current;
+            gameData[@"title"] = gameName;
+            gameData[@"price"] = gamePrice;
+            
+            [gameData saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 
-            UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created New Game" message:@"We have successfully created your new game" preferredStyle:UIAlertControllerStyleAlert];
+                if (succeeded){
+                    
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created New Game" message:@"We have successfully created your new game" preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *userCreated = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        
+                        enteredName.text = @"";
+                        enteredPrice.text = @"";
+                        
+                        [success dismissViewControllerAnimated:YES completion:nil];
+                        
+                    }];
+                    
+                    [success addAction:userCreated];
+                    [self presentViewController:success animated:YES completion:nil];
+                    
+                }
                 
-            UIAlertAction *userCreated = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    
-                enteredName.text = @"";
-                enteredPrice.text = @"";
-                    
-                [success dismissViewControllerAnimated:YES completion:nil];
-                [self dismissViewControllerAnimated:YES completion:nil];
-                    
             }];
-                
-            [success addAction:userCreated];
-            [self presentViewController:success animated:YES completion:nil];
-                
-            }
             
-        }];
-    
+        }
+        
+    } else {
+        
+        NSNumberFormatter *formater = [[NSNumberFormatter alloc] init];
+        [formater setNumberStyle:NSNumberFormatterDecimalStyle];
+        
+        gameName = enteredName.text;
+        gamePrice = [formater numberFromString:enteredPrice.text];
+        
+        if(!gamePrice && [gameName isEqualToString:@""]){
+            
+            [self invalidData];
+            
+        } else if (!gamePrice) {
+            
+            [self invalidPrice];
+            
+        } else  if ([gameName isEqualToString:@""]){
+            
+            [self invalidTitle];
+            
+        } else {
+            
+            [PFACL setDefaultACL:[PFACL ACL] withAccessForCurrentUser:YES];
+            
+            PFQuery *getData = [PFQuery queryWithClassName:@"Game"];
+            
+            [getData getObjectInBackgroundWithId:updateID block:^(PFObject *gameData, NSError *error) {
+                
+                gameData[@"user"] = current;
+                gameData[@"title"] = gameName;
+                gameData[@"price"] = gamePrice;
+                
+                [gameData saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    
+                    if (succeeded){
+                        
+                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created New Game" message:@"We have successfully created your new game" preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction *userCreated = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            
+                            enteredName.text = @"";
+                            enteredPrice.text = @"";
+                            
+                            [self dismissViewControllerAnimated:YES completion:nil];
+                            [success dismissViewControllerAnimated:YES completion:nil];
+                            
+                        }];
+                        
+                        [success addAction:userCreated];
+                        [self presentViewController:success animated:YES completion:nil];
+                        
+                    }
+
+                    }];
+                
+            }];
+        }
+        
+    }
     
 }
 
@@ -121,6 +211,55 @@
     
     [self presentViewController:noConnection animated:YES completion:nil];
     
+    
+}
+
+- (void) invalidData{
+    
+    UIAlertController *invalidData = [UIAlertController alertControllerWithTitle:@"Invalid Title & Price" message:@"Please make sure you entered a game title as well as a valid price for the game, example 9.99 - Do not use $." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *closeAlert = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        [invalidData dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    [invalidData addAction:closeAlert];
+    
+    [self presentViewController:invalidData animated:YES completion:nil];
+    
+}
+
+- (void) invalidTitle{
+    
+    
+    UIAlertController *invalidData = [UIAlertController alertControllerWithTitle:@"Invalid Title" message:@"Please make sure you entered a valid game title." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *closeAlert = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        [invalidData dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    [invalidData addAction:closeAlert];
+    
+    [self presentViewController:invalidData animated:YES completion:nil];
+    
+}
+
+- (void) invalidPrice{
+    
+    UIAlertController *invalidData = [UIAlertController alertControllerWithTitle:@"Invalid Price" message:@"Please make sure you entered a valid price, example 9.99 - Do not use $." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *closeAlert = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        [invalidData dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    [invalidData addAction:closeAlert];
+    
+    [self presentViewController:invalidData animated:YES completion:nil];
     
 }
 

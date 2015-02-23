@@ -18,12 +18,16 @@
     
     IBOutlet UITextField *enteredName;
     IBOutlet UITextField *enteredPrice;
-    IBOutlet UIButton *addGame;
     
 }
 
 - (IBAction)clear:(id)sender;
 - (IBAction)addGame:(id)sender;
 - (BOOL)connectionCheck;
+
+@property (nonatomic, strong) NSString *updatePrice;
+@property (nonatomic, strong) NSString *updateTitle;
+@property (nonatomic, strong) NSString *updateID;
+@property (nonatomic, strong) IBOutlet UIButton *addGame;
 
 @end
