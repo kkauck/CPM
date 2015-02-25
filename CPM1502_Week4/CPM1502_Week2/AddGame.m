@@ -23,6 +23,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     
+    //This will be called to check the network connection is valid the add game button is enabled and if it is not then an alert will let the user know and they will be backed out of this screen.
     if([self connectionCheck]){
         
         [self connectionValid];
@@ -63,6 +64,7 @@
 
 - (IBAction)addGame:(id)sender{
     
+    //This will check to see if the ID is empty from the main display, if it is the code will run as intended for creating a new game for the user. If the ID however is not empty the ID will be stored to update the game that was selected.
     if ([updateID isEqualToString:@""]){
     
         NSNumberFormatter *formater = [[NSNumberFormatter alloc] init];
@@ -71,6 +73,7 @@
         gameName = enteredName.text;
         gamePrice = [formater numberFromString:enteredPrice.text];
         
+        //This is the check to validate all the fields for the user so they have to enter in the correct information.
         if(!gamePrice && [gameName isEqualToString:@""]){
             
             [self invalidData];
@@ -118,6 +121,7 @@
         
     } else {
         
+        //This section off the code is for the updating of the game, the ID is passed in so the correct information is retrieved from the server and is correctly updated for the user.
         NSNumberFormatter *formater = [[NSNumberFormatter alloc] init];
         [formater setNumberStyle:NSNumberFormatterDecimalStyle];
         
@@ -152,7 +156,7 @@
                     
                     if (succeeded){
                         
-                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created New Game" message:@"We have successfully created your new game" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Updated Game" message:@"We have successfully updated your new game" preferredStyle:UIAlertControllerStyleAlert];
                         
                         UIAlertAction *userCreated = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                             

@@ -16,10 +16,12 @@
     
     [super viewDidLoad];
     
+    //This is used to ensure the resumedView is called whenever it is brought back into the foreground from being minimized on the phone.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumedView) name:UIApplicationDidBecomeActiveNotification object:nil];
     
 }
 
+    //This will be called to check the network connection is valid the add game button is enabled and if it is not then an alert will let the user know and they will be backed out of this screen.
 - (void)viewDidAppear:(BOOL)animated{
     
     if([self connectionCheck]){
@@ -35,7 +37,7 @@
     
 }
 
-
+    //This is a function that is called for when the user has the application minimized and when it is brought back into the foreground is called and checks to make sure the user has a connection.
 - (void)resumedView{
     
     if([self connectionCheck]){
